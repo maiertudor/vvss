@@ -18,16 +18,65 @@ public class TEST_LaboratoriesController {
 
     private final LaboratoriesController controller;
     private final FileDataPersistence laboratoryPersistence;
+    private final FileDataPersistence studentPersistence;
 
     public TEST_LaboratoriesController() {
         controller = new LaboratoriesController("students.txt", "laboratories.txt");
         laboratoryPersistence = new FileDataPersistence("laboratories.txt");
+        studentPersistence = new FileDataPersistence("students.txt");
     }
 
     @Test
-    public void testAddStudent() {
+    public void testAddStudent() throws IOException {
+        int initialSize = studentPersistence.getStudentsList().size();
+        //EC 1 8 12
         Student student = new Student("asdf1234", "John Doe", 935);
         assertTrue(controller.saveStudent(student));
+        assertEquals(studentPersistence.getStudentsList().size(), initialSize + 1);
+        //EC 2
+        student.setRegNumber("asdf12345");
+        assertFalse(controller.saveStudent(student));
+        assertEquals(studentPersistence.getStudentsList().size(), initialSize + 1);
+        //EC 3
+        student.setRegNumber("asdf123");
+        assertFalse(controller.saveStudent(student));
+        assertEquals(studentPersistence.getStudentsList().size(), initialSize + 1);
+        //EC 4
+        student.setRegNumber("1234asdb");
+        assertFalse(controller.saveStudent(student));
+        assertEquals(studentPersistence.getStudentsList().size(), initialSize + 1);
+        //EC 5
+        student.setRegNumber("asdfe1234");
+        assertFalse(controller.saveStudent(student));
+        assertEquals(studentPersistence.getStudentsList().size(), initialSize + 1);
+        //EC 6
+        student.setRegNumber("asd1234");
+        assertFalse(controller.saveStudent(student));
+        assertEquals(studentPersistence.getStudentsList().size(), initialSize + 1);
+        //EC 7
+        student.setRegNumber("");
+        assertFalse(controller.saveStudent(student));
+        assertEquals(studentPersistence.getStudentsList().size(), initialSize + 1);
+
+        student.setRegNumber("asdf1234");
+        //EC 9
+        student.setGroup(-1);
+        assertFalse(controller.saveStudent(student));
+        assertEquals(studentPersistence.getStudentsList().size(), initialSize + 1);
+        //EC 10
+        student.setGroup(1000);
+        assertFalse(controller.saveStudent(student));
+        assertEquals(studentPersistence.getStudentsList().size(), initialSize + 1);
+
+        student.setGroup(935);
+        //EC 13
+        student.setName("John---Doe");
+        assertFalse(controller.saveStudent(student));
+        assertEquals(studentPersistence.getStudentsList().size(), initialSize + 1);
+        //EC 14
+        student.setName("");
+        assertFalse(controller.saveStudent(student));
+        assertEquals(studentPersistence.getStudentsList().size(), initialSize + 1);
     }
 
     @Test
