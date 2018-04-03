@@ -31,6 +31,12 @@ public class Laboratory {
         this.studentRegNumber = studentRegNumber;
     }
 
+    public Laboratory(int number, Date date, int problemNumber) {
+        this.number = number;
+        this.date = date;
+        this.problemNumber = problemNumber;
+    }
+
     public int getNumber() {
         return number;
     }

@@ -94,6 +94,8 @@ public class TEST_LaboratoriesController {
         try {
             Laboratory laboratory = new Laboratory(2, dateString, 2, "asdf1234");
             assertTrue(controller.saveLaboratory(laboratory));
+            laboratory.setProblemNumber(-2);
+            assertFalse(controller.saveLaboratory(laboratory));
         } catch (ParseException e) {
             fail();
         }
@@ -102,7 +104,7 @@ public class TEST_LaboratoriesController {
     @Test
     public void testAddGrade() {
         try {
-            assertTrue(controller.addGrade("asdf1234", "2", 9));
+            assertTrue(controller.addGrade("asdf1234", "2", 5));
         } catch (IOException | ParseException e) {
             fail();
         }

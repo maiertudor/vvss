@@ -24,7 +24,7 @@ public class LaboratoriesController {
     	this.studentPersistence = new FileDataPersistence(studentFile);
     	this.laboratoryPersistence = new FileDataPersistence(laboratoryFile);
     }
-    
+
     public boolean saveStudent(Student student) {
         if (Validator.validateStudent(student)) {
             this.studentPersistence.saveStudent(student);
