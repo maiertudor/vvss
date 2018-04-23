@@ -91,11 +91,20 @@ public class TEST_LaboratoriesController {
         //Get string format of the tomorrow date
         String dateString = dateFormate.format(date);
 
+        c.set(2010,1,1);
+        Date dateInPast = c.getTime();
         try {
             Laboratory laboratory = new Laboratory(2, dateString, 2, "asdf1234");
             assertTrue(controller.saveLaboratory(laboratory));
-            laboratory.setProblemNumber(-2);
+            laboratory.setNumber(-2);
             assertFalse(controller.saveLaboratory(laboratory));
+            laboratory.setNumber(2);
+            laboratory.setProblemNumber(11);
+            assertFalse(controller.saveLaboratory(laboratory));
+            laboratory.setProblemNumber(2);
+            laboratory.setDate(dateInPast);
+            assertFalse(controller.saveLaboratory(laboratory));
+            laboratory.setDate(date);
         } catch (ParseException e) {
             fail();
         }
@@ -105,6 +114,7 @@ public class TEST_LaboratoriesController {
     public void testAddGrade() {
         try {
             assertTrue(controller.addGrade("asdf1234", "2", 5));
+            assertFalse(controller.addGrade("asdf1234", "2", 11));
         } catch (IOException | ParseException e) {
             fail();
         }
